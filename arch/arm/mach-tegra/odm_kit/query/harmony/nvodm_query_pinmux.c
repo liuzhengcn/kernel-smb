@@ -36,7 +36,11 @@ static const NvU32 s_NvOdmPinMuxConfig_Uart[] = {
     NvOdmUartPinMap_Config4,    // UART1, 2 lines
     0,//NvOdmUartPinMap_Config2,    // UART2, 2 lines
     NvOdmUartPinMap_Config1,    // UART3, 4 lines
+#if defined(CONFIG_7373C_V20)
+	0,
+#else
     NvOdmUartPinMap_Config1,    // UART4, 4 lines gps
+#endif
     0                           // UART5
 };
 
