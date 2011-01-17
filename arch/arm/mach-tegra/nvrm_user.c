@@ -42,6 +42,9 @@
 #include "nvos_ioctl.h"
 #include "nvreftrack.h"
 #include "board.h"
+#if defined(CONFIG_7564C_V10)
+#include <nvodm_query_discovery.h>//hzj added
+#endif
 
 NvRmDeviceHandle s_hRmGlobal = NULL;
 pid_t s_nvrm_daemon_pid = 0;
@@ -647,11 +650,17 @@ int tegra_pm_notifier(struct notifier_block *nb,
 void tegra_display_off(struct early_suspend *h)
 {
     notify_daemon(STRING_PM_DISPLAY_OFF);
+  #if defined(CONFIG_7564C_V10)
+  Nv_Suspend_LED_Control(1);//hzj added
+  #endif
 }
 
 void tegra_display_on(struct early_suspend *h)
 {
     notify_daemon(STRING_PM_DISPLAY_ON);
+    #if defined(CONFIG_7564C_V10)
+ 	Nv_Suspend_LED_Control(0);//hzj added
+	#endif
 }
 
 static struct early_suspend tegra_display_power =
