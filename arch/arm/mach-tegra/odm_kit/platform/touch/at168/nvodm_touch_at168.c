@@ -66,7 +66,7 @@ typedef struct AT168_TouchDeviceRec
 	NvOdmServicesPmuHandle hPmu;
 	NvOdmGpioPinHandle hPinReset;
 	NvOdmGpioPinHandle hPinInterrupt;
-#if defined(CONFIG_7373C_V20)
+#if (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 	NvOdmGpioPinHandle hPinPower;
 #endif
 	NvOdmServicesGpioIntrHandle hGpioIntr;
@@ -2173,7 +2173,7 @@ void AT168_GetCapabilities (NvOdmTouchDeviceHandle hDevice, NvOdmTouchCapabiliti
 
 NvBool AT168_PowerOnOff (NvOdmTouchDeviceHandle hDevice, NvBool OnOff)
 {
-	#if defined(CONFIG_7373C_V20)
+	#if (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 	AT168_PRINTF(("NvOdm Touch: AT168_PowerOnOff OnOff=%d \n", OnOff));
 
 	AT168_TouchDevice* hTouch = (AT168_TouchDevice*)hDevice;
@@ -2320,7 +2320,7 @@ NvBool AT168_Open (NvOdmTouchDeviceHandle* hDevice)
 	}
 	NvOdmGpioConfig(hTouch->hGpio, hTouch->hPinInterrupt, NvOdmGpioPinMode_InputData);
 
-#if defined(CONFIG_7373C_V20)
+#if (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 	hTouch->hPinPower = NvOdmGpioAcquirePinHandle(hTouch->hGpio, GpioPort[2], GpioPin[2]);
 	if (!hTouch->hPinPower) {
 		NvOsDebugPrintf("NvOdm Touch : Couldn't get GPIO hPinPower \n");

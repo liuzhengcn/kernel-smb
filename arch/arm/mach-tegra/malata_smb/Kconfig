@@ -92,8 +92,10 @@ endchoice
 choice
 	prompt "Select a subboard of SMBA9701"
 	depends on SMBA9701
+	
 config 7564C_V10
 	bool "Board number: 7564C_V10"
+	
 endchoice
 
 endif

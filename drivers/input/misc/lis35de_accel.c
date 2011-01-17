@@ -246,10 +246,18 @@ static int lis35de_get_raw_xyz(struct lis35de_dev *dev, int *x, int *y, int *z)
 	{
 		return -1;
 	}
+	#if defined(CONFIG_7564C_V10)
+	sy = (char)cx; sx= (char)cy; sz = (char)cz; 
+   
+	//sz -= 44;	
+     	*x = sx; *y = sy; *z = sz;
+	
+	#else	
 	sx = (char)cx; sy = (char)cy; sz = (char)cz;
 	//sx = 128 - cx; sy = 128 - cy; sz = 128 - cz;
 
 	*x = sx; *y = sy; *z = sz;
+	#endif
 
 	logd("accelerometer data: cx=%d, cy=%d, cz=%d\r\n", cx, cy, cz);
 	logd("accelerometer data: sx=%d, sy=%d, sz=%d\r\n", sx, sy, sz);
@@ -475,11 +483,7 @@ static void lis35de_update_work_func(struct work_struct *work)
 		x = ((dev->flag & LIS35DE_FLIP_X) ? -x : x) + dev->x_calibrate;
 		y = ((dev->flag & LIS35DE_FLIP_Y) ? -y : y) + dev->y_calibrate;
 		z = ((dev->flag & LIS35DE_FLIP_Z) ? -z : z) + dev->z_calibrate;
-		#if (!defined(CONFIG_7564C_V10))	
-		if (dev->flag & LIS35DE_SWAP_XY) {
-			temp = x; x = y; y = temp;
-		}
-        #endif
+
 #if __LIS35DE_HIGHPASS_FILTER__
 		dev->filter_buffer_x[dev->filter_data_num] = x;
 		dev->filter_buffer_y[dev->filter_data_num] = y;
@@ -553,8 +557,9 @@ static int lis35de_probe(struct platform_device *pdev)
 	dev->i2c_address = pdata->i2c_address;
 	dev->update_interval = pdata->update_interval;
 	dev->intr_gpio = pdata->intr_gpio;
+#if (!defined(CONFIG_7564C_V10))	
 	dev->flag = pdata->flag;
-
+#endif
 	/* Anyway, we let the inteerupt gpio in */
 	if (dev->intr_gpio != 0) {
 		if (gpio_request(dev->intr_gpio, "accel_intr") == 0) {

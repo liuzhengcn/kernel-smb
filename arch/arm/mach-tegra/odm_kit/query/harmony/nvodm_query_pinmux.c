@@ -56,7 +56,7 @@ static const NvU32 s_NvOdmPinMuxConfig_Twc[] = {
     0
 };
 
-#if ( (defined(CONFIG_7379Y_V11)) || (defined(CONFIG_7373C_V20))) 
+#if ( (defined(CONFIG_7379Y_V11)) || (defined(CONFIG_7373C_V20))||(defined(CONFIG_7564C_V10))) 
 static const NvU32 s_NvOdmPinMuxConfig_I2c[] = {
     NvOdmI2cPinMap_Config1,
     NvOdmI2cPinMap_Multiplexed,
