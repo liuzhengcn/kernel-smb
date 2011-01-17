@@ -1326,7 +1326,7 @@ static struct platform_device lis35de_accelerometer_device =
 
 #ifdef CONFIG_INPUT_ISL29023_LS
 
-#if (defined(CONFIG_7379Y_V11))
+#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20))
 struct isl29023_platform_data isl29023_pdata = {
 	.i2c_instance = 1, 
 	.i2c_address = ISL29023_I2C_ADDRESS, 
