@@ -49,8 +49,8 @@ choice
 	prompt "Select a client of 7265C_V20"
 	depends on 7265C_V20
 
-config CLIENT_FLEX
-	bool "Client: flex"
+config CLIENT_WCL
+	bool "Client: wcl"
 endchoice
 
 choice
