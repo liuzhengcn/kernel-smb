@@ -256,7 +256,8 @@ CONFIG_SMBA1002=y
 #
 CONFIG_7265C_V20=y
 
-
+#special for wcl
+CONFIG_CLIENT_WCL=y
 #
 # Processor Type
 #
@@ -1021,6 +1022,7 @@ CONFIG_USB_ARMLINUX=y
 # CONFIG_NET_POLL_CONTROLLER is not set
 # CONFIG_ISDN is not set
 # CONFIG_PHONE is not set
+CONFIG_USB_NET_QF9700=y
 
 #
 # Input device support
@@ -1670,9 +1672,9 @@ CONFIG_USB_ACM=y
 CONFIG_USB_WDM=y
 # CONFIG_USB_TMC is not set
 CONFIG_ERICSSON_F3307_ENABLE=y
-#3G module F5521
+#F5521GW 
 CONFIG_USB_NET_CDC_NCM=y
-#qf9700 usb --> ethernet
+#usb --> ethernet
 CONFIG_USB_NET_QF9700=y
 #
 # NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
