@@ -420,6 +420,7 @@ static void so340010_kbd_early_suspend(struct early_suspend *es)
 	
 	dev = (struct so340010_kbd_dev *)container_of(es, struct so340010_kbd_dev, early_suspend);
 	NvOdmGpioInterruptMask(dev->irq_handle, NV_TRUE);
+	del_timer_sync(&dev->timer);
 	cancel_work_sync(&dev->work);
 	so340010_sleep(dev, true);
 	
@@ -436,6 +437,7 @@ static void so340010_kbd_late_resume(struct early_suspend *es)
 	if (so340010_reset(dev)) {
 		logd(TAG "so340010_reset_failed\r\n");
 	}
+	mod_timer(&dev->timer, jiffies + msecs_to_jiffies(SO340010_TIMER_INTERVAL));
 	NvOdmGpioInterruptMask(dev->irq_handle, NV_FALSE);
 }
 #endif

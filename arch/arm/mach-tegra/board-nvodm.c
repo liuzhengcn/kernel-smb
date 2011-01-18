@@ -1394,16 +1394,6 @@ static struct switch_h2w_platform_data switch_h2w_pdata = {
 	.hp_det_active_low = 1, 
 	.have_dock_hp = 0, 
 };
-#elif defined(CONFIG_7265C_V20)
-static struct switch_h2w_platform_data switch_h2w_pdata = {
-        .hp_det_port = 't' - 'a',
-        .hp_det_pin = 5,
-        .hp_det_active_low = 1,
-        .have_dock_hp = 0,
-};
-
-#endif
-
 static struct platform_device switch_h2w_device = {
 	.name = H2W_SWITCH_DEV_NAME, 
 	.id = -1,
@@ -1411,6 +1401,22 @@ static struct platform_device switch_h2w_device = {
 		.platform_data = &switch_h2w_pdata, 
 	}, 
 };
+
+#elif defined(CONFIG_7265C_V20)
+static struct switch_h2w_platform_data switch_h2w_pdata = {
+        .hp_det_port = 't' - 'a',
+        .hp_det_pin = 5,
+        .hp_det_active_low = 1,
+        .have_dock_hp = 0,
+};
+static struct platform_device switch_h2w_device = {
+	.name = "switch-h2w", 
+	.id = -1,
+
+};
+#endif
+
+
 #endif
 	
 #ifdef CONFIG_SWITCH_HDMI
