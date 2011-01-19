@@ -155,6 +155,11 @@ static const NvOdmGpioPinKeyInfo s_GpioPinKeyInfo[] = {
 	{KEY_VOLUMEUP, 10, NV_TRUE},
 	{KEY_VOLUMEDOWN, 10, NV_TRUE},
 	{KEY_F4, 10, NV_TRUE},
+	#if defined(CONFIG_SMBA1011)
+	{KEY_MENU, 10, NV_TRUE},
+    {KEY_HOME, 10, NV_TRUE},
+   	{KEY_BACK, 10, NV_TRUE},
+	#endif
 #elif defined(CONFIG_7379Y_V11)
 	{KEY_VOLUMEUP, 10, NV_TRUE},
 	{KEY_VOLUMEDOWN, 10, NV_TRUE},
@@ -182,6 +187,11 @@ static const NvOdmGpioPinInfo s_GpioKeyBoard[] = {
 	{NVODM_PORT('d'), 4, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[0]},
 	{NVODM_PORT('v'), 4, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[1]},
 	{NVODM_PORT('v'), 2, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[2]},
+	#if defined(CONFIG_SMBA1011)
+	{NVODM_PORT('v'), 5, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[3]},
+    {NVODM_PORT('v'), 6, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[4]},
+    {NVODM_PORT('i'), 3, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[5]},
+	#endif
 #elif (defined(CONFIG_7564C_V10))
 	{NVODM_PORT('q'), 0, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[0]},
 	{NVODM_PORT('q'), 1, NvOdmGpioPinActiveState_Low, (void *)&s_GpioPinKeyInfo[1]},
