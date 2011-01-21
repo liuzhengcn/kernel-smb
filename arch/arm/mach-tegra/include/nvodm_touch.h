@@ -255,6 +255,23 @@ typedef struct
 
 } NvOdmTouchCoordinateInfo;
 
+/**
+ * Defines the ODM touch pad coordinate information.
+ */
+typedef struct
+{
+	/// Specifies the X-min value.
+	NvU32 xMin;
+	/// Specifies the Y-min value.
+	NvU32 yMin;
+	/// Specifies the X-max value.
+	NvU32 xMax;
+	/// Specifies the Y-max value.
+    NvU32 yMax;
+	/// Specifies the version value.
+	NvU32 version;
+
+} NvOdmTouchInitDataInfo;
 
 /**
  * @brief Defines the structure for the sampling rate.
@@ -317,6 +334,14 @@ NvOdmTouchDeviceGetCapabilities(NvOdmTouchDeviceHandle hDevice, NvOdmTouchCapabi
 NvBool
 NvOdmTouchReadCoordinate( NvOdmTouchDeviceHandle hDevice, NvOdmTouchCoordinateInfo *coord);
 
+/**
+ * Gets Initdata info from the touch device.
+ *
+ * @param hDevice The handle to the touch pad.
+ * @return NV_TRUE if successful, or NV_FALSE otherwise.
+ */
+NvBool
+NvOdmTouchReadInitData( NvOdmTouchDeviceHandle hDevice, NvOdmTouchInitDataInfo *InitData);
 
 /**
  * Hooks up the interrupt handle to the GPIO interrupt and enables the interrupt.
