@@ -174,10 +174,10 @@ static int dock_switch_probe(struct platform_device *pdev)
 		logd("err_register_switch\n");
 		goto err_register_switch;
 	}
-	if (dock_switch->irq_car) 
-		enable_irq(dock_switch->irq_car);
-	if (dock_switch->irq_desktop)
-		enable_irq(dock_switch->irq_desktop);
+	//if (dock_switch->irq_car) 
+	//	enable_irq(dock_switch->irq_car);
+	//if (dock_switch->irq_desktop)
+	//	enable_irq(dock_switch->irq_desktop);
 	platform_set_drvdata(pdev, dock_switch);
 	p_dock_switch=dock_switch;
 	schedule_work(&dock_switch->work);
