@@ -595,6 +595,7 @@ static int tegra_touch_thread_at168(void *pdata)
 	struct tegra_touch_driver_data *touch =
 		(struct tegra_touch_driver_data*)pdata;
 	NvOdmTouchCoordinateInfo coord = {0};
+	NvOdmTouchInitDataInfo InitData = {0};
 	NvU16 i = 0;
 	NvBool bKeepReadingSamples = NV_TRUE;
 	NvOdmTouchCapabilities *caps = &touch->caps;
@@ -613,7 +614,34 @@ InBurnBootloader:
 			msleep(1000);
 			goto InBurnBootloader;
 		}
-		
+	
+		//printk("tegra_thread_at168 now Initdata-version is 0x%x caps-version is 0x%x\n", InitData.version, caps->Version);
+		if((0 != InitData.version) || (0 != caps->Version)){
+			//printk("tegra_touch_thread_at168 do not need to re-read Initdata\n");
+		}else{
+			if (!NvOdmTouchReadInitData(touch->hTouchDevice, &InitData)){
+				pr_err("ReadCoordinate Couldn't read initdata \n");
+			}else{
+				printk("tegra_thread_at168 now MaxX is %d MaxY is %d \n", InitData.xMax, InitData.yMax);
+				input_set_abs_params(touch->input_dev, ABS_X, InitData.xMin, InitData.xMax, 0, 0);
+				input_set_abs_params(touch->input_dev, ABS_Y, InitData.yMin, InitData.yMax, 0, 0);
+				input_set_abs_params(touch->input_dev, ABS_HAT0X, InitData.xMin, InitData.xMax, 0, 0);
+				input_set_abs_params(touch->input_dev, ABS_HAT0Y, InitData.yMin, InitData.yMax, 0, 0);
+
+				//Add it for Multi-touch
+				input_set_abs_params(touch->input_dev, ABS_MT_POSITION_X, InitData.xMin, InitData.xMax, 0, 0);
+				input_set_abs_params(touch->input_dev, ABS_MT_POSITION_Y, InitData.yMin, InitData.yMax, 0, 0);
+				input_set_abs_params(touch->input_dev, ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0);
+				input_set_abs_params(touch->input_dev, ABS_MT_WIDTH_MAJOR, 0, 200, 0, 0);
+
+				//input_unregister_device(touch->input_dev);
+				if (input_register_device(touch->input_dev))
+				{
+					pr_err("tegra_thread_at168 : cannot to register input device\n");
+				}
+			}
+		}
+
 		bKeepReadingSamples = NV_TRUE;
 		//while (bKeepReadingSamples&&(!touch->bSuspended))
 		while (bKeepReadingSamples)
@@ -798,12 +826,20 @@ static int __init tegra_touch_probe_at168(struct platform_device *pdev)
     //*******************************************************************************//
     platform_set_drvdata(pdev, touch);
 
-    err = input_register_device(input_dev);
-    if (err)
-    {
-        pr_err("tegra_touch_probe: Unable to register input device\n");
-        goto err_input_register_device_failed;
-    }
+	//modified for if no version(initdata) from touchscreen,will not register the device.
+	if(0 != touch->Version)
+	{
+    	err = input_register_device(input_dev);
+    	if (err)
+    	{
+        	pr_err("tegra_touch_probe: Unable to register input device\n");
+        	goto err_input_register_device_failed;
+    	}
+	}
+	else
+	{
+		printk("tegra_touch_probe_at168 now Version is 0 \n");
+	}
 
  //*************************************************//
     //create calibration file,  path  ->   /sys/devices/platform/tegra_touch/calibration
@@ -845,8 +881,10 @@ static int __init tegra_touch_probe_at168(struct platform_device *pdev)
        touch->early_suspend.resume = tegra_touch_late_resume;
        register_early_suspend(&touch->early_suspend);
 #endif
-    printk(KERN_INFO NVODM_TOUCH_NAME 
+    /*
+	printk(KERN_INFO NVODM_TOUCH_NAME 
         ": Successfully registered the ODM touch driver %x\n", touch->hTouchDevice);
+	*/
     return 0;
 
 err_input_register_device_failed:
@@ -1078,7 +1116,7 @@ static int __init tegra_touch_probe(struct platform_device *pdev)
 
   if(err) { index=0; NvOdmTouchDriverIndex(&index);  }
     //pr_err("NvOdmTouchDriverIndex()=%d\n",NvOdmTouchDriverIndex(NULL));
-    pr_err("tegra_touch_probe: err=%d\n",err);
+    //pr_err("tegra_touch_probe: err=%d\n",err);
    
         
    return err;
@@ -1104,7 +1142,6 @@ static int tegra_touch_remove(struct platform_device *pdev)
 	/* FIXME How to destroy the thread? Maybe we should use workqueues? */
 	input_unregister_device(touch->input_dev);
 	/* NvOsSemaphoreDestroy(touch->semaphore); */
-	input_unregister_device(touch->input_dev);
 	kfree(touch);
 	return 0;
 }

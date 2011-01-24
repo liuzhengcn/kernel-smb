@@ -1782,7 +1782,8 @@ static noinline void __init tegra_setup_i2c(void)
 		if (!mux)
 			continue;
 
-#ifndef CONFIG_TEGRA_ODM_VENTANA
+//#ifndef CONFIG_TEGRA_ODM_VENTANA
+#if ((!defined(CONFIG_TEGRA_ODM_VENTANA)) && (!defined(CONFIG_TEGRA_ODM_HARMONY)))
 		if (mux == NVODM_QUERY_PINMAP_MULTIPLEXED) {
 			pr_err("%s: unable to register %s.%d (multiplexed)\n",
 			       __func__, dev->name, dev->id);
