@@ -20,7 +20,7 @@
 
 #define __SWITCH_DOCK_GENERIC_DEBUG__		1
 
-#define TAG				"switch-dock:  "
+#define TAG				"dock: "
 
 #if __SWITCH_DOCK_GENERIC_DEBUG__
 #define logd(x...)		do { printk(TAG x); } while(0)
@@ -35,16 +35,23 @@
 
 struct dock_switch_device {
 	struct switch_dev sdev;
+	
 	int 	gpio_desktop;
 	int 	irq_desktop;
-	int		gpio_desktop_active_low;
+	int	gpio_desktop_active_low;
+	
 	int 	gpio_car;
 	int 	irq_car;
-	int		gpio_car_active_low;
-	int		state;
+	int	gpio_car_active_low;
+	
+	int	state;
 	struct work_struct work;
 };
+#if defined(CONFIG_SWITCH_DOCK_H2W)
 extern int h2w_switch_update(void);
+#else
+int h2w_switch_update(void) { return 0;}
+#endif
 static void dock_switch_work_func(struct work_struct *work) 
 {
 	int state = 0, value;
