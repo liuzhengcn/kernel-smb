@@ -49,7 +49,12 @@
 #include <linux/fs.h> 
 #include <asm/uaccess.h> 
 #include <linux/mm.h> 
+#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)
+#define AT168_I2C_SPEED_KHZ                          200//400
+#else
 #define AT168_I2C_SPEED_KHZ                          100//400
+#endif
+
 #define AT168_I2C_TIMEOUT                            2000//500
 #define AT168_DEBOUNCE_TIME_MS 		0
 #define AT168_TOUCH_DEVICE_GUID 			NV_ODM_GUID('a','t','e','1','6','8','t','s')
