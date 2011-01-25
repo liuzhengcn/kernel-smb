@@ -20,6 +20,8 @@
 
 #include "logd.h"
 
+#define BAT_I2C_SPEED_KHZ      100 //100KHZ
+
 void odm_i2c_init(struct odm_i2c_dev *dev, unsigned char instance, unsigned char address, int speed, int timeout)
 {
 	dev->i2c = 0;
@@ -31,7 +33,7 @@ void odm_i2c_init(struct odm_i2c_dev *dev, unsigned char instance, unsigned char
 
 void odm_smbus_init(struct odm_i2c_dev* dev, unsigned char instance,  unsigned char address, int timeout)
 {
-	odm_i2c_init(dev, instance, address, 100, timeout);
+	odm_i2c_init(dev, instance, address, BAT_I2C_SPEED_KHZ, timeout);
 }
 
 int odm_i2c_open(struct odm_i2c_dev *dev)
