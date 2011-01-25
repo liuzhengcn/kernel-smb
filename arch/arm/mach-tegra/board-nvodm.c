@@ -1395,7 +1395,7 @@ static struct switch_h2w_platform_data switch_h2w_pdata = {
         .have_dock_hp = 1,
         .dock_hp_det_port='x'-'a',
 	.dock_hp_det_pin=7,
-	.dock_hp_det_active_low=1,
+	.dock_hp_det_active_low=0,
 	#else
 	.have_dock_hp = 0,
 	#endif
