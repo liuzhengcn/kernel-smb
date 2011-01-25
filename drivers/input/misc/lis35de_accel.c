@@ -40,7 +40,12 @@
 #define logd(x...)		do {} while(0)
 #endif
 
+#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)
+#define LIS35DE_I2C_SPEED_KHZ					(200)
+#else
 #define LIS35DE_I2C_SPEED_KHZ					(400)
+#endif
+
 #define LIS35DE_I2C_TIMEOUT_MS					(1000)
 
 #if (__LIS35DE_GENERIC_DEBUG__)
