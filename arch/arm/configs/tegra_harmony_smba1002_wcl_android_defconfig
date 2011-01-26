@@ -1022,7 +1022,7 @@ CONFIG_USB_ARMLINUX=y
 # CONFIG_NET_POLL_CONTROLLER is not set
 # CONFIG_ISDN is not set
 # CONFIG_PHONE is not set
-CONFIG_USB_NET_QF9700=y
+
 
 #
 # Input device support

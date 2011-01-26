@@ -49,6 +49,8 @@ void AT168_SetCalibration(NvOdmTouchDeviceHandle hDevice);
 
 NvBool AT168_ReadCoordinate( NvOdmTouchDeviceHandle hDevice, NvOdmTouchCoordinateInfo *coord);
 
+NvBool AT168_ReadInitData( NvOdmTouchDeviceHandle hDevice, NvOdmTouchInitDataInfo *InitData);
+
 NvBool AT168_EnableInterrupt(NvOdmTouchDeviceHandle hDevice, NvOdmOsSemaphoreHandle hInterruptSemaphore);
 
 NvBool AT168_HandleInterrupt(NvOdmTouchDeviceHandle hDevice);

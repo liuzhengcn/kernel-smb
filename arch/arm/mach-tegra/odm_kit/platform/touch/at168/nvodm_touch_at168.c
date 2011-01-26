@@ -49,7 +49,12 @@
 #include <linux/fs.h> 
 #include <asm/uaccess.h> 
 #include <linux/mm.h> 
+#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)
+#define AT168_I2C_SPEED_KHZ                          200//400
+#else
 #define AT168_I2C_SPEED_KHZ                          100//400
+#endif
+
 #define AT168_I2C_TIMEOUT                            2000//500
 #define AT168_DEBOUNCE_TIME_MS 		0
 #define AT168_TOUCH_DEVICE_GUID 			NV_ODM_GUID('a','t','e','1','6','8','t','s')
@@ -262,6 +267,7 @@ static void InitOdmTouch (NvOdmTouchDevice* Dev)
 	Dev->Close              = AT168_Close;
 	Dev->GetCapabilities    = AT168_GetCapabilities;
 	Dev->ReadCoordinate     = AT168_ReadCoordinate;
+	Dev->ReadInitData       = AT168_ReadInitData;
 	Dev->EnableInterrupt    = AT168_EnableInterrupt;
 	Dev->HandleInterrupt    = AT168_HandleInterrupt;
 	Dev->GetSampleRate      = NULL;
@@ -2163,6 +2169,45 @@ NvBool AT168_ReadCoordinate (NvOdmTouchDeviceHandle hDevice, NvOdmTouchCoordinat
 
 	return NV_TRUE;
 
+}
+
+NvBool AT168_ReadInitData(NvOdmTouchDeviceHandle hDevice, NvOdmTouchInitDataInfo* InitData)
+{
+	AT168_TouchDevice* hTouch = (AT168_TouchDevice*)hDevice;
+
+	NvU8 InitDataValue[8] = {0};
+	if(!AT168_READ(hTouch, AT168_XMAX_LO, InitDataValue, (AT168_VERSION_PROTOCOL - AT168_XMAX_LO + 1)))
+	{
+		NvOsDebugPrintf("NvOdmTouch_at168:  AT168_ReadInitData AT168_READ InitDataValue fail .\n");
+		return NV_FALSE;
+	}
+	else
+	{
+		//Set the Max and Min position
+        AT168_Capabilities.XMinPosition = 0; //AT168_MIN_X;
+        AT168_Capabilities.YMinPosition = 0; //AT168_MIN_Y;
+        AT168_Capabilities.XMaxPosition = ((InitDataValue[1] << 8) | (InitDataValue[0])); //AT168_MAX_X;
+        AT168_Capabilities.YMaxPosition = ((InitDataValue[3] << 8) | (InitDataValue[2])); //AT168_MAX_Y;
+
+		//Set the Version
+        AT168_Capabilities.Version = ((InitDataValue[4] << 24) | (InitDataValue[5] << 16) | (InitDataValue[6] << 8) | (InitDataValue[7]) );
+
+		/* change the touchscreen capabilities */
+		NvOdmOsMemcpy(&hTouch->Caps, &AT168_Capabilities, sizeof(NvOdmTouchCapabilities));
+		//add to InitData
+		InitData->xMin = AT168_Capabilities.XMinPosition;
+		InitData->yMin = AT168_Capabilities.YMinPosition;
+		InitData->xMax = AT168_Capabilities.XMaxPosition;
+		InitData->yMax = AT168_Capabilities.YMaxPosition;
+
+		InitData->version = AT168_Capabilities.Version;
+	}
+
+	//NvOsDebugPrintf("AT168_ReadInitData: now FW xMAX is %d   yMAx is %d Version is %x.\n", AT168_Capabilities.XMaxPosition, AT168_Capabilities.YMaxPosition, AT168_Capabilities.Version);
+
+	//NvOsDebugPrintf("AT168_ReadInitData: now InitData xMAX is %d   yMAx is %d Version is %x.\n", InitData->xMax, InitData->yMax, InitData->version);
+
+	return NV_TRUE;	
 }
 
 void AT168_GetCapabilities (NvOdmTouchDeviceHandle hDevice, NvOdmTouchCapabilities* pCapabilities)

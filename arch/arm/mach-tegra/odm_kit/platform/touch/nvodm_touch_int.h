@@ -39,6 +39,7 @@ extern "C"
  
 typedef struct NvOdmTouchDeviceRec{
     NvBool (*ReadCoordinate)    (NvOdmTouchDeviceHandle hDevice, NvOdmTouchCoordinateInfo *coord);
+	NvBool (*ReadInitData)      (NvOdmTouchDeviceHandle hDevice, NvOdmTouchInitDataInfo *InitData);
     NvBool (*EnableInterrupt)   (NvOdmTouchDeviceHandle hDevice, NvOdmOsSemaphoreHandle hInterruptSemaphore);
     NvBool (*HandleInterrupt)   (NvOdmTouchDeviceHandle hDevice);
     NvBool (*GetSampleRate)     (NvOdmTouchDeviceHandle hDevice, NvOdmTouchSampleRate* pTouchSampleRate);

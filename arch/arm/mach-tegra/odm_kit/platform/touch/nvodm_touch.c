@@ -89,6 +89,12 @@ NvOdmTouchReadCoordinate( NvOdmTouchDeviceHandle hDevice, NvOdmTouchCoordinateIn
 }
 
 NvBool
+NvOdmTouchReadInitData( NvOdmTouchDeviceHandle hDevice, NvOdmTouchInitDataInfo *InitData)
+{
+	return hDevice->ReadInitData(hDevice, InitData);
+}
+
+NvBool
 NvOdmTouchGetSampleRate(NvOdmTouchDeviceHandle hDevice, NvOdmTouchSampleRate* pTouchSampleRate)
 {
     return hDevice->GetSampleRate(hDevice, pTouchSampleRate);
