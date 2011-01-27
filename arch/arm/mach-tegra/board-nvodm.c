@@ -1201,7 +1201,7 @@ static struct platform_device tegra_scrollwheel_device = {
 
 #ifdef CONFIG_KEYBOARD_SO340010
 
-#if (defined(CONFIG_7373C_V20))
+#if (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 struct so340010_kbd_platform_data so340010_kbd_pdata = {
 	.i2c_instance = 1,
     .i2c_address = SO340010_I2C_ADDRESS,
@@ -1232,6 +1232,14 @@ static struct dock_switch_platform_data dock_switch_data = {
 	.gpio_desktop_active_low = 0,		/* Is gpio active low ?*/
 	.gpio_car = 0,				/* If donot have an car dock, leave it 0 */
 	.gpio_car_active_low = 0,		/* Car dock active low ?*/
+};
+#elif defined(CONFIG_7564C_V10)
+   static struct dock_switch_platform_data dock_switch_data = {
+       // .gpio_desktop = 8*('h'-'a')+0,//TEGRA_GPIO_DESKTOP_DOCK;/* Your gpio number*/
+        .gpio_desktop = 8*('x'-'a')+7,
+        .gpio_desktop_active_low = 1,           /* Is gpio active low ?*/
+        .gpio_car = 0,                          /* If donot have an car dock, leave it 0 */
+        .gpio_car_active_low = 0,               /* Car dock active low ?*/
 };
 #else
 static struct dock_switch_platform_data dock_switch_data = {
@@ -1293,7 +1301,7 @@ struct lis35de_platform_data lis35de_pdata = {
 	.flag = 0, 
 };
 
-#elif (defined(CONFIG_7373C_V20))
+#elif (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 struct lis35de_platform_data lis35de_pdata = {
     .i2c_instance = 1,
     .i2c_address =  LIS35DE_I2C_ADDRESS,
@@ -1324,7 +1332,7 @@ static struct platform_device lis35de_accelerometer_device =
 
 #ifdef CONFIG_INPUT_ISL29023_LS
 
-#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20))
+#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 struct isl29023_platform_data isl29023_pdata = {
 	.i2c_instance = 1, 
 	.i2c_address = ISL29023_I2C_ADDRESS, 
@@ -1377,7 +1385,7 @@ static struct platform_device pixel_qi_screen_ctrl_device = {
 #endif
 
 #ifdef CONFIG_SWITCH_H2W
-#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20))
+#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 static struct switch_h2w_platform_data switch_h2w_pdata = {
 	.hp_det_port = 'w' - 'a', 
 	.hp_det_pin = 2, 
@@ -1627,7 +1635,7 @@ static void tegra_setup_spi(void) { }
 #endif
 
 #ifdef CONFIG_I2C_TEGRA
-#if (defined(CONFIG_TEGRA_ODM_VENTANA) || defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20))
+#if (defined(CONFIG_TEGRA_ODM_VENTANA) || defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20) ||defined(CONFIG_7564C_V10))
 static struct tegra_i2c_plat_parms tegra_i2c_platform[] = {
 	[0] = {
 		.adapter_nr = 0,

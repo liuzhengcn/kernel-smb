@@ -18,6 +18,15 @@
 #include <linux/string.h>
 #include <linux/uaccess.h>
 #include <linux/miscdevice.h>
+#if defined(CONFIG_7564C_V10)
+#include <nvodm_services.h>//hzj added
+//hzj add for lockkey
+#define  DET_LOCKKEY_PORT  'q'-'a' 
+#define  DET_LOCKKEY_PIN  6
+int    PinState;
+#define IRQ_DEBOUNCE			20
+//end hzj add
+#endif
 #include <linux/platform_device.h>
 #include <linux/gpio.h>
 
@@ -84,6 +93,14 @@ struct lis35de_dev {
 	struct semaphore sem;
 
 	unsigned int flag;
+	#if defined(CONFIG_7564C_V10)		
+	/*hzj added lockkey*/
+    NvOdmServicesGpioHandle lockkey_gpio;
+    NvOdmGpioPinHandle lockkey_pin;
+    NvOdmServicesGpioIntrHandle lockkey_irq;
+ //   struct workqueue_struct *workqueue;
+	struct work_struct work;
+	#endif
 
 #if __LIS35DE_HIGHPASS_FILTER__
 	int filter_buffer_x[FILTER_BUFFER_LEN + 1];
@@ -134,6 +151,30 @@ static DEVICE_ATTR(z_flip, 0777, lis35de_read_sysfs_flip, lis35de_write_sysfs_fl
 static DEVICE_ATTR(debug, 0777, lis35de_read_sysfs_debug, lis35de_write_sysfs_debug);
 #endif
 
+#if defined(CONFIG_7564C_V10)
+
+static int LockKey_init(void)
+{   
+   	struct lis35de_dev *dev = &s_lis35de_dev;
+
+   dev->lockkey_gpio= NvOdmGpioOpen();
+	if (!dev->lockkey_gpio) {
+	logd("err open lockkey\r\n");
+		kfree(dev);
+		return -1;
+	}
+	
+   dev->lockkey_pin = NvOdmGpioAcquirePinHandle(dev->lockkey_gpio, DET_LOCKKEY_PORT, DET_LOCKKEY_PIN);
+	if (!dev->lockkey_pin) {
+    logd("err acquire detect pin handle lockkey\r\n");
+		NvOdmGpioClose(dev->lockkey_gpio);
+		return -1;
+	}
+	NvOdmGpioConfig(dev->lockkey_gpio, dev->lockkey_pin, NvOdmGpioPinMode_InputData);
+
+
+}
+#endif
 
 static int lis35de_i2c_read(struct lis35de_dev *dev, unsigned char mem_address, unsigned char *buffer, unsigned int num_read)
 {
@@ -210,10 +251,18 @@ static int lis35de_get_raw_xyz(struct lis35de_dev *dev, int *x, int *y, int *z)
 	{
 		return -1;
 	}
+	#if defined(CONFIG_7564C_V10)
+	sy = (char)cx; sx= (char)cy; sz = (char)cz; 
+   
+	//sz -= 44;	
+     	*x = sx; *y = sy; *z = sz;
+	
+	#else	
 	sx = (char)cx; sy = (char)cy; sz = (char)cz;
 	//sx = 128 - cx; sy = 128 - cy; sz = 128 - cz;
 
 	*x = sx; *y = sy; *z = sz;
+	#endif
 
 	logd("accelerometer data: cx=%d, cy=%d, cz=%d\r\n", cx, cy, cz);
 	logd("accelerometer data: sx=%d, sy=%d, sz=%d\r\n", sx, sy, sz);
@@ -432,14 +481,13 @@ static void lis35de_update_work_func(struct work_struct *work)
 {
 	int i, x, y, z, temp;
 	struct lis35de_dev *dev = &s_lis35de_dev;
-	
+    #if defined(CONFIG_7564C_V10)
+	NvOdmGpioGetState(dev->lockkey_gpio, dev->lockkey_pin, &PinState);     //hzj added 	
+	#endif	
 	if (!lis35de_get_raw_xyz(dev, &x, &y, &z)) {
 		x = ((dev->flag & LIS35DE_FLIP_X) ? -x : x) + dev->x_calibrate;
 		y = ((dev->flag & LIS35DE_FLIP_Y) ? -y : y) + dev->y_calibrate;
 		z = ((dev->flag & LIS35DE_FLIP_Z) ? -z : z) + dev->z_calibrate;
-		if (dev->flag & LIS35DE_SWAP_XY) {
-			temp = x; x = y; y = temp;
-		}
 
 #if __LIS35DE_HIGHPASS_FILTER__
 		dev->filter_buffer_x[dev->filter_data_num] = x;
@@ -470,10 +518,23 @@ static void lis35de_update_work_func(struct work_struct *work)
 		if (x != dev->x || y != dev->y || z != dev->z) {
 			dev->x = x; dev->y = y; dev->z = z;
 			logd(TAG "report x=%d, y=%d, z=%d\r\n", dev->x, dev->y, dev->z);
+			#if defined(CONFIG_7564C_V10)
+			if(PinState){
+				input_report_abs(dev->accel_dev, ABS_X, dev->x);	
+				input_report_abs(dev->accel_dev, ABS_Y, dev->y);	
+				input_report_abs(dev->accel_dev, ABS_Z, dev->z);			
+				input_sync(dev->accel_dev);
+			//	logd("PinState=====1 hzj add\n");
+	         }
+	         else{
+	          // 	logd("PinState=====0 hzj add\n");
+	          }
+			#else
 			input_report_abs(dev->accel_dev, ABS_X, dev->x);
 			input_report_abs(dev->accel_dev, ABS_Y, dev->y);
 			input_report_abs(dev->accel_dev, ABS_Z, dev->z);
 			input_sync(dev->accel_dev);
+			#endif
 		}
 	}
 
@@ -501,8 +562,9 @@ static int lis35de_probe(struct platform_device *pdev)
 	dev->i2c_address = pdata->i2c_address;
 	dev->update_interval = pdata->update_interval;
 	dev->intr_gpio = pdata->intr_gpio;
+#if (!defined(CONFIG_7564C_V10))	
 	dev->flag = pdata->flag;
-
+#endif
 	/* Anyway, we let the inteerupt gpio in */
 	if (dev->intr_gpio != 0) {
 		if (gpio_request(dev->intr_gpio, "accel_intr") == 0) {
@@ -510,6 +572,9 @@ static int lis35de_probe(struct platform_device *pdev)
 		}
 	}
 
+    #if defined(CONFIG_7564C_V10)
+	  	LockKey_init();  //hzj added
+	#endif	
 	NvOdmQueryPinMux(NvOdmIoModule_I2c, &pI2cConfigs, &NumI2cConfigs);
 	if (dev->i2c_instance >= NumI2cConfigs) {
 		pr_err(TAG "NvOdmQueryPinMux failed \r\n");

@@ -423,11 +423,17 @@ static const TPS6586xPmuSupplyInfo tps6586xSupplyInfoTable[] =
         {TPS6586x_R52_RGB1GREEN, 7, 1, TPS6586x_RFF_INVALID},
         NULL, NULL, NULL,
         TPS6586x_RFF_INVALID,
-
+       #if (defined(CONFIG_7564C_V10))
+	   {
+            NV_FALSE,  
+            0, 1, 0x9f, 0  //hzj change 0x1f
+        },
+	   #else 
         {
             NV_FALSE,
             0, 1, 0x1f, 0
         },
+		#endif
     },
 
     //BLUE1
@@ -1395,6 +1401,7 @@ void DumpTps6586x(NvOdmPmuDeviceHandle hDevice)
 }
 #endif
 
+//just for wifi led
 NvOdmPmuDeviceHandle WIFI_hDevice=NULL;
 
 void Nv_WIFI_LED_Control(unsigned int enable)
@@ -1427,6 +1434,44 @@ void Nv_WIFI_LED_Control(unsigned int enable)
 	}
 }
 
+#if (defined(CONFIG_7564C_V10)) //suspend led  hzj added
+
+NvOdmPmuDeviceHandle Suspend_hDevice=NULL;
+
+void Nv_Suspend_LED_Control(unsigned int enable)
+{
+	if(Suspend_hDevice==NULL) return;
+	NvU32 data = 0;
+	NvOdmPmuDeviceHandle hDevice=Suspend_hDevice;
+	TPS6586xPmuSupply index=TPS6586xPmuSupply_GREEN1;
+        const TPS6586xPmuSupplyInfo* pSupplyInfo = &tps6586xSupplyInfoTable[index];
+	
+    	NvBool status = NV_FALSE;
+
+    	NV_ASSERT(pSupplyInfo->supply == (TPS6586xPmuSupply)index);
+    	
+    	while(1)
+    	{
+    		//disable RGB1 driver flash mode
+	    	data =0xFF;
+	    	if(!Tps6586xI2cWrite8(hDevice, TPS6586x_R50_RGB1FLASH, data)) break;
+	    	
+	    	//enable RGB1 driver
+	    	if(!Tps6586xI2cRead8(hDevice, pSupplyInfo->ctrlRegInfo.addr, &data)) break;
+	    	data |= (((1<<pSupplyInfo->ctrlRegInfo.bits)-1)<<pSupplyInfo->ctrlRegInfo.start);
+	    	if(!Tps6586xI2cWrite8(hDevice, pSupplyInfo->ctrlRegInfo.addr, data)) break;
+
+			if(!Tps6586xI2cRead8(hDevice, pSupplyInfo->supplyRegInfo.addr, &data)) break;
+	    	data=(enable?pSupplyInfo->cap.MaxMilliVolts:pSupplyInfo->cap.MinMilliVolts);
+	    	//data = (((data<<pSupplyInfo->supplyRegInfo.bits)-1)<<pSupplyInfo->supplyRegInfo.start);
+
+	    	if(!Tps6586xI2cWrite8(hDevice, pSupplyInfo->supplyRegInfo.addr, data)) break;
+    		break;
+	}
+}
+
+#endif
+
 NvBool Tps6586xSetup(NvOdmPmuDeviceHandle hDevice)
 {
     NvOdmIoModule I2cModule = NvOdmIoModule_I2c;
@@ -1440,9 +1485,13 @@ NvBool Tps6586xSetup(NvOdmPmuDeviceHandle hDevice)
 
     NV_ASSERT(hDevice);
 	
-#if (defined(CONFIG_7373C_V20))
+#if (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
 	WIFI_hDevice = hDevice;
 #endif
+
+#if (defined(CONFIG_7564C_V10))
+  Suspend_hDevice= hDevice; //hzj added
+#endif  
 
     hPmu = (NvOdmPmuDeviceTPS *)NvOdmOsAlloc(sizeof(NvOdmPmuDeviceTPS));
     if (hPmu == NULL)
