@@ -31,15 +31,6 @@ endchoice
 
 comment "Subboard platform"
 
-choice
-	prompt "Select a subboard of SMBA1011"
-	depends on SMBA1011
-	
-config 7373C_V20
-	bool "Board number: 7373C_V20"
-		
-endchoice
-
 choice 
 	prompt "Select a subboard of SMBA1002"
 	depends on SMBA1002
@@ -81,6 +72,7 @@ endchoice
 
 choice
 	prompt "Select a subboard of SMBA1007"
+	default 7373C_V20
 	depends on SMBA1007
 
 config 7373C_V20
@@ -100,6 +92,15 @@ choice
 config 7564C_V10
 	bool "Board number: 7564C_V10"
 	
+endchoice
+
+choice
+	prompt "Select a subboard of SMBA1011"
+	depends on SMBA1011 
+	
+config 7113C_V10
+	bool "Board number: 7113C_V10"
+		
 endchoice
 
 endif
