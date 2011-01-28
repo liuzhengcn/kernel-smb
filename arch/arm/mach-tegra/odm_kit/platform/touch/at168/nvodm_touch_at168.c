@@ -2400,6 +2400,7 @@ NvBool AT168_Open (NvOdmTouchDeviceHandle* hDevice)
 		AT168_Capabilities.XMaxPosition = 1024; //AT168_MAX_X;
 		AT168_Capabilities.YMaxPosition = 600; //AT168_MAX_Y;
 		NvOsDebugPrintf("NvOdmTouch_at168:  AT168_Open AT168_READ InitData fail .\n");
+		AT168_Capabilities.Version = ((InitData[4] << 24) | (InitData[5] << 16) | (InitData[6] << 8) | (InitData[7]));
 		//return NV_FALSE;
 	}else{
 		#if 0
@@ -2417,7 +2418,7 @@ NvBool AT168_Open (NvOdmTouchDeviceHandle* hDevice)
 		AT168_Capabilities.YMinPosition = 0; //AT168_MIN_Y;
 		AT168_Capabilities.XMaxPosition = ((InitData[1] << 8) | (InitData[0])); //AT168_MAX_X;
 		AT168_Capabilities.YMaxPosition = ((InitData[3] << 8) | (InitData[2])); //AT168_MAX_Y;
-
+		AT168_Capabilities.Version = ((InitData[4] << 24) | (InitData[5] << 16) | (InitData[6] << 8) | (InitData[7]));
 		if((0 == AT168_Capabilities.XMaxPosition) 
 				|| (0 == AT168_Capabilities.XMaxPosition)
 				|| (AT168_Capabilities.XMaxPosition >= 61440) //61440 means 0xf000
@@ -2425,10 +2426,11 @@ NvBool AT168_Open (NvOdmTouchDeviceHandle* hDevice)
 			NvOsDebugPrintf("=== xMax yMax from touchscreen FW is %d %d, now set default ===\n", AT168_Capabilities.XMaxPosition, AT168_Capabilities.YMaxPosition);	
 			AT168_Capabilities.XMaxPosition = 1024;
 			AT168_Capabilities.YMaxPosition = 600;
+			AT168_Capabilities.Version = 0x02000000;
 		}
 	}
 	//Set the Version
-	AT168_Capabilities.Version = ((InitData[4] << 24) | (InitData[5] << 16) | (InitData[6] << 8) | (InitData[7]) );
+	//AT168_Capabilities.Version = ((InitData[4] << 24) | (InitData[5] << 16) | (InitData[6] << 8) | (InitData[7]) );
 
 	AT168_Capabilities.CalibrationData = 0;
 	NvOsDebugPrintf("NvOdmTouch_at168: now FW xMAX is %d   yMAx is %d Version is %x.\n", AT168_Capabilities.XMaxPosition, AT168_Capabilities.YMaxPosition, AT168_Capabilities.Version);
