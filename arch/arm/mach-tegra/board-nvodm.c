@@ -1385,7 +1385,7 @@ static struct platform_device pixel_qi_screen_ctrl_device = {
 #endif
 
 #ifdef CONFIG_SWITCH_H2W
-#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
+#if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10)||defined(CONFIG_7232C_V21))
 static struct switch_h2w_platform_data switch_h2w_pdata = {
 	.hp_det_port = 'w' - 'a', 
 	.hp_det_pin = 2, 
@@ -1402,11 +1402,11 @@ static struct switch_h2w_platform_data switch_h2w_pdata = {
         #ifdef CONFIG_SWITCH_DOCK_H2W
         .have_dock_hp = 1,
         .dock_hp_det_port='x'-'a',
-	.dock_hp_det_pin=7,
-	.dock_hp_det_active_low=0,
-	#else
-	.have_dock_hp = 0,
-	#endif
+		.dock_hp_det_pin=7,
+		.dock_hp_det_active_low=0,
+		#else
+		.have_dock_hp = 0,
+		#endif
 };
 
 //#elif defined(CONFIG_7323C_V21) 1004 or 1009
@@ -1419,11 +1419,11 @@ static struct switch_h2w_platform_data switch_h2w_pdata = {
         #ifdef CONFIG_SWITCH_DOCK_H2W
         .have_dock_hp = 1,
         .dock_hp_det_port='t'-'a',
-	.dock_hp_det_pin=5,
-	.dock_hp_det_active_low=1,
-	#else
-	.have_dock_hp = 0,
-	#endif
+		.dock_hp_det_pin=5,
+		.dock_hp_det_active_low=1,
+		#else
+		.have_dock_hp = 0,
+		#endif
 };
 
 #endif

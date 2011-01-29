@@ -22,7 +22,7 @@ config SMBA1007
 	bool "SMBA1007"
 
 config SMBA8901
-	bool "SMBA8902"
+	bool "SMBA8901"
 
 config SMBA9701
 	bool "SMBA9701"
@@ -83,6 +83,9 @@ endchoice
 choice
 	prompt "Select a subboard of SMBA8901"
 	depends on SMBA8901
+
+config 7232C_V21
+	bool "Board number: 7232C_V21"
 endchoice
 
 choice

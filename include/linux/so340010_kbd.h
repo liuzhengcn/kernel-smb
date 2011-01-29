@@ -22,7 +22,7 @@
 
 #define SO340010_I2C_INSTANCE         0
 #define SO340010_I2C_ADDRESS            0x58
-#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21))
+#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7232C_V21))
 #define SO340010_I2C_SPEED          200
 #elif (defined(CONFIG_7373C_V20))
 #define SO340010_I2C_SPEED          400

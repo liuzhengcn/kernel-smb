@@ -49,7 +49,7 @@
 #include <linux/fs.h> 
 #include <asm/uaccess.h> 
 #include <linux/mm.h> 
-#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21))
+#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7232C_V21))
 #define AT168_I2C_SPEED_KHZ                          200//400
 #elif (defined(CONFIG_7373C_V20))
 #define AT168_I2C_SPEED_KHZ                          200//400
