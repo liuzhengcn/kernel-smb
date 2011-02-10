@@ -49,10 +49,16 @@ int    PinState;
 #define logd(x...)		do {} while(0)
 #endif
 
-#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7113C_V10)
+
+
+
+#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7232C_V21)||defined(CONFIG_7113C_V10))
+
 #define LIS35DE_I2C_SPEED_KHZ					(200)
+#elif defined(CONFIG_7373C_V20)
+#define LIS35DE_I2C_SPEED_KHZ                   (400)
 #else
-#define LIS35DE_I2C_SPEED_KHZ					(400)
+#define LIS35DE_I2C_SPEED_KHZ                   (100)
 #endif
 
 #define LIS35DE_I2C_TIMEOUT_MS					(1000)

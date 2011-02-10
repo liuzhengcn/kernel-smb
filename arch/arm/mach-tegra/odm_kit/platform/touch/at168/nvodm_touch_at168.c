@@ -49,7 +49,8 @@
 #include <linux/fs.h> 
 #include <asm/uaccess.h> 
 #include <linux/mm.h> 
-#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7113C_V10))
+
+#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7232C_V21)||defined(CONFIG_7113C_V10))
 #define AT168_I2C_SPEED_KHZ                          200//400
 #elif (defined(CONFIG_7373C_V20))
 #define AT168_I2C_SPEED_KHZ                          200//400
@@ -64,9 +65,7 @@
 #define AT168_WRITE(dev, reg, byte) AT168_WriteRegister(dev, reg, byte)
 #define AT168_READ(dev, reg, buffer, len) AT168_ReadRegisterSafe(dev, reg, buffer, len)
 
-typedef struct AT168_TouchDeviceRec
-{
-	NvOdmTouchDevice OdmTouch;
+ONFIG_7113C_V10)||defined(CONFIG_7113C_V10)
 	NvOdmTouchCapabilities Caps;
 	NvOdmServicesI2cHandle hOdmI2c;
 	NvOdmServicesGpioHandle hGpio;

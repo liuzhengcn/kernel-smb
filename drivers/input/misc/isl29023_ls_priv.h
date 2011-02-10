@@ -11,10 +11,16 @@
 /*
  * I2c parameter
  */
-#define ISL29023_I2C_INSTANCE				0
+ ISL29023_I2C_INSTANCE				0
 
-#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7113C_V10)
+
+
+
+#if (defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7232C_V21)||defined(CONFIG_7113C_V10))
+
 #define ISL29023_I2C_SPEED_KHZ				(200)
+#elif (defined(CONFIG_7373C_V20))
+#define ISL29023_I2C_SPEED_KHZ              (400)
 #else
 #define ISL29023_I2C_SPEED_KHZ				(100)
 #endif
