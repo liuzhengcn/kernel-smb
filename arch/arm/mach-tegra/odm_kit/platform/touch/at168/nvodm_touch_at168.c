@@ -65,7 +65,9 @@
 #define AT168_WRITE(dev, reg, byte) AT168_WriteRegister(dev, reg, byte)
 #define AT168_READ(dev, reg, buffer, len) AT168_ReadRegisterSafe(dev, reg, buffer, len)
 
-ONFIG_7113C_V10)||defined(CONFIG_7113C_V10)
+typedef struct AT168_TouchDeviceRec
+{
+	NvOdmTouchDevice OdmTouch;
 	NvOdmTouchCapabilities Caps;
 	NvOdmServicesI2cHandle hOdmI2c;
 	NvOdmServicesGpioHandle hGpio;
