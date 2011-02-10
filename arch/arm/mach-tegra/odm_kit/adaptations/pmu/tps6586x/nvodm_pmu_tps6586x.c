@@ -1485,9 +1485,9 @@ NvBool Tps6586xSetup(NvOdmPmuDeviceHandle hDevice)
 
     NV_ASSERT(hDevice);
 	
-#if (defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10))
+
 	WIFI_hDevice = hDevice;
-#endif
+
 
 #if (defined(CONFIG_7564C_V10))
   Suspend_hDevice= hDevice; //hzj added

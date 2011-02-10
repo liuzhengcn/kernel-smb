@@ -189,7 +189,8 @@ typedef struct
     NvS16 BaselineDate[NVODM_MAX_TOUCH_SCREEN_LINE];
 
     /// Holds the calibrate result of the touchscreen.
-    NvS16 CalibrateResultDate[NVODM_MAX_TOUCH_SCREEN_LINE];
+    NvS16 CalibrateResultDate[NVODM_MAX_TOUCH_SCREEN_LINE];    
+
 
 } NvOdmTouchCapabilities;
 
@@ -474,6 +475,7 @@ NvOdmTouchSetBaseline(NvOdmTouchDeviceHandle hDevice);
  */
 void
 NvOdmTouchSetCalibrateResult(NvOdmTouchDeviceHandle hDevice);
+
 
 
 #if defined(__cplusplus)

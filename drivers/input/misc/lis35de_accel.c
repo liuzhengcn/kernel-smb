@@ -49,7 +49,7 @@ int    PinState;
 #define logd(x...)		do {} while(0)
 #endif
 
-#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)
+#if defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21)||defined(CONFIG_7113C_V10)
 #define LIS35DE_I2C_SPEED_KHZ					(200)
 #else
 #define LIS35DE_I2C_SPEED_KHZ					(400)
