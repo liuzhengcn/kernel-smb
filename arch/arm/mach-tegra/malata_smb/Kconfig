@@ -67,6 +67,13 @@ config 7323C_V21
 
 endchoice
 
+choice 
+	prompt "Select a client of 7323C_V21"
+depends on 7323C_V21
+config CLIENT_AQXL
+	bool "Client: aqxl"
+endchoice
+
 choice
 	prompt "Select a subboard of SMBA1006"
 	default 7379Y_V11
