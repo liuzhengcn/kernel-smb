@@ -121,13 +121,5 @@ config 7564C_V10
 	
 endchoice
 
-choice
-	prompt "Select a subboard of SMBA1011"
-	depends on SMBA1011 
-	
-config 7113C_V10
-	bool "Board number: 7113C_V10"
-		
-endchoice
 
 endif
