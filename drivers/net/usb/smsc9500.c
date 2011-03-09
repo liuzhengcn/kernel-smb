@@ -2753,11 +2753,12 @@ static int smsc9500_bind(struct usbnet *dev, struct usb_interface *intf)
         }
 
         send_to_user_times = 0;
-
+/*
         if(net_connect_netlink_init_flag == 0) {
                 net_connect_netlink_init();
                 net_connect_netlink_init_flag = 1;
         }
+*/
 #endif
 
 	return 0;
@@ -5287,14 +5288,34 @@ static struct usb_driver smsc9500_driver = {
 
 static int __init smsc9500_init(void)
 {
+        int ret = 0;
 
-        return usb_register(&smsc9500_driver);
+        ret = usb_register(&smsc9500_driver);
+        
+        /* Register the PID receiver thread */        
+#if NETLINK_TO_APP_LEVEL
+        if(net_connect_netlink_init_flag == 0) {
+                net_connect_netlink_init();
+                net_connect_netlink_init_flag = 1;
+        }
+#endif
+
+        return ret;
 }
 module_init(smsc9500_init);
 
 static void __exit smsc9500_exit(void)
 {
         usb_deregister(&smsc9500_driver);
+
+#if NETLINK_TO_APP_LEVEL
+        /* unregister the PID receiver thread */
+        if(net_connect_netlink_init_flag == 1) {
+                net_connect_netlink_fini();
+                net_connect_netlink_init_flag = 0;
+        }
+#endif
+
 }
 module_exit(smsc9500_exit);
 

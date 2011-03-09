@@ -53,9 +53,11 @@ endchoice
 
 choice 
 	prompt "Select a client of 7265C_V20"
-depends on 7265C_V20
+	depends on 7265C_V20
+	
 config CLIENT_WCL
 	bool "Client: wcl"
+	
 endchoice
 
 choice
@@ -69,9 +71,14 @@ endchoice
 
 choice 
 	prompt "Select a client of 7323C_V21"
-depends on 7323C_V21
+	depends on 7323C_V21
+
 config CLIENT_AQXL
 	bool "Client: aqxl"
+	
+config CLIENT_SYZG
+	bool "Client: syzg"
+	
 endchoice
 
 choice
@@ -114,13 +121,5 @@ config 7564C_V10
 	
 endchoice
 
-choice
-	prompt "Select a subboard of SMBA1011"
-	depends on SMBA1011 
-	
-config 7113C_V10
-	bool "Board number: 7113C_V10"
-		
-endchoice
 
 endif
