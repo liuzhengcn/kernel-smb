@@ -1460,7 +1460,7 @@ err_out:
 	return rv;
 }
 
-#if defined(CONFIG_ERICSSON_F3307_ENABLE)	//Add by Conlin;2010-9-15
+#if ((defined(CONFIG_ERICSSON_F3307_ENABLE))||(defined(CONFIG_HOJY_TD688_ENABLE))||(defined(CONFIG_HOJY_W668_ENABLE)))	//Add by Conlin;2010-9-15
 static int acm_reset_resume(struct usb_interface *intf)
 {
 	struct acm *acm = usb_get_intfdata(intf);
@@ -1566,7 +1566,7 @@ static struct usb_driver acm_driver = {
 	.suspend =	acm_suspend,
 	.resume =	acm_resume,
 #endif
-#if defined(CONFIG_ERICSSON_F3307_ENABLE)	//Add by Conlin;2010-9-15
+#if ((defined(CONFIG_ERICSSON_F3307_ENABLE))||(defined(CONFIG_HOJY_TD688_ENABLE))||(defined(CONFIG_HOJY_W668_ENABLE)))  //Add by Conlin;2010-9-15
 	.reset_resume =	acm_reset_resume,
 #endif
 	.id_table =	acm_ids,

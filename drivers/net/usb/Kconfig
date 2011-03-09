@@ -382,7 +382,20 @@ config ERICSSON_F3307_ENABLE
 	depends on USB_USBNET
 	help
 	  This option enables hosting "F3307" USB networking links.
-	  
+
+config HOJY_TD688_ENABLE
+	tristate "Host for HOJY TD688 module"
+	depends on USB_USBNET
+	help
+	  This option enables hosting "TD688" USB networking links.
+
+
+config HOJY_W668_ENABLE
+	tristate "Host for HOJY W668 module"
+	depends on USB_USBNET
+	help
+	  This option enables hosting "W668" USB networking links.
+
 config USB_NET_QF9700
 	tristate "QF9700 based USB 2.0 10/100 ethernet devices support"
 	depends on USB_USBNET
