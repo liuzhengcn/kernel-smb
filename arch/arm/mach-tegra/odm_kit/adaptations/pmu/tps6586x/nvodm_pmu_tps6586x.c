@@ -1440,33 +1440,35 @@ NvOdmPmuDeviceHandle Suspend_hDevice=NULL;
 
 void Nv_Suspend_LED_Control(unsigned int enable)
 {
+        NVODMPMU_PRINTF("hzj add nvsuspend_led_0/n");
 	if(Suspend_hDevice==NULL) return;
 	NvU32 data = 0;
 	NvOdmPmuDeviceHandle hDevice=Suspend_hDevice;
 	TPS6586xPmuSupply index=TPS6586xPmuSupply_GREEN1;
         const TPS6586xPmuSupplyInfo* pSupplyInfo = &tps6586xSupplyInfoTable[index];
-	
+	NVODMPMU_PRINTF("hzj add nvsuspend_led_8/n");
     	NvBool status = NV_FALSE;
-
+        
     	NV_ASSERT(pSupplyInfo->supply == (TPS6586xPmuSupply)index);
-    	
+    	NVODMPMU_PRINTF("hzj add nvsuspend_led_1/n");
     	while(1)
     	{
     		//disable RGB1 driver flash mode
 	    	data =0xFF;
 	    	if(!Tps6586xI2cWrite8(hDevice, TPS6586x_R50_RGB1FLASH, data)) break;
-	    	
+	    	NVODMPMU_PRINTF("hzj add nvsuspend_led_2/n");
 	    	//enable RGB1 driver
 	    	if(!Tps6586xI2cRead8(hDevice, pSupplyInfo->ctrlRegInfo.addr, &data)) break;
 	    	data |= (((1<<pSupplyInfo->ctrlRegInfo.bits)-1)<<pSupplyInfo->ctrlRegInfo.start);
 	    	if(!Tps6586xI2cWrite8(hDevice, pSupplyInfo->ctrlRegInfo.addr, data)) break;
-
+                NVODMPMU_PRINTF("hzj add nvsuspend_led_3/n");
 			if(!Tps6586xI2cRead8(hDevice, pSupplyInfo->supplyRegInfo.addr, &data)) break;
 	    	data=(enable?pSupplyInfo->cap.MaxMilliVolts:pSupplyInfo->cap.MinMilliVolts);
 	    	//data = (((data<<pSupplyInfo->supplyRegInfo.bits)-1)<<pSupplyInfo->supplyRegInfo.start);
-
+                 NVODMPMU_PRINTF("hzj add nvsuspend_led_4/n");
 	    	if(!Tps6586xI2cWrite8(hDevice, pSupplyInfo->supplyRegInfo.addr, data)) break;
     		break;
+                NVODMPMU_PRINTF("hzj add nvsuspend_led_5/n");
 	}
 }
 
@@ -1484,8 +1486,6 @@ NvBool Tps6586xSetup(NvOdmPmuDeviceHandle hDevice)
                            NvOdmPeripheralGetGuid(PMUGUID);
 
     NV_ASSERT(hDevice);
-	
-
 	WIFI_hDevice = hDevice;
 
 
@@ -1601,7 +1601,16 @@ NvBool Tps6586xSetup(NvOdmPmuDeviceHandle hDevice)
     if (NV_FALSE == Tps6586xWriteVoltageReg(hDevice, Ext_TPS74201PmuSupply_LDO,
 						ODM_VOLTAGE_OFF, NULL))
          NVODMPMU_PRINTF(("TPS: Fail to set Ext_TPS74201PmuSupply_LDO OFF\n"));
-
+#if 1
+//renn add for test
+            NvU32 SMODE1Value;
+            if (!Tps6586xI2cRead8(hDevice, TPS6586x_R47_SMODE1, &SMODE1Value))
+            NVODMPMU_PRINTF(("TPS:Read from PMU I2C fails ... TPS6586x_R47_SMODE1\n"));
+            SMODE1Value=((SMODE1Value|0x02)&(~0x20));
+            if (!Tps6586xI2cWrite8(hDevice, TPS6586x_R47_SMODE1,SMODE1Value))
+            NVODMPMU_PRINTF(("TPS:Write to PMU I2C fails ... TPS6586x_R47_SMODE1\n"));           	   
+//renn add end
+#endif
     return NV_TRUE;
 
 OPEN_FAILED:
