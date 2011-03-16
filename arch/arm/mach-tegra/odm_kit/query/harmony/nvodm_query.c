@@ -378,6 +378,115 @@ static const NvOdmSdramControllerConfigAdv s_NvOdmHyS5c1GbEmcConfigTable[] =
             0x00000000,   /* CFG_CLKTRIM_2 */
         }
     }
+ #elif  defined(CONFIG_7564C_V10)
+	   {
+                  0x20,   /* Rev 2.0 */
+                166500,   /* SDRAM frquency */
+                  1000,   /* EMC core voltage */
+                    46,   /* Number of EMC parameters below */
+        {
+            0x0000000a,   /* RC */
+            0x00000016,   /* RFC */
+            0x00000008,   /* RAS */
+            0x00000003,   /* RP */
+            0x00000004,   /* R2W */
+            0x00000004,   /* W2R */
+            0x00000002,   /* R2P */
+            0x0000000c,   /* W2P */
+            0x00000003,   /* RD_RCD */
+            0x00000003,   /* WR_RCD */
+            0x00000002,   /* RRD */
+            0x00000001,   /* REXT */
+            0x00000004,   /* WDV */
+            0x00000005,   /* QUSE */
+            0x00000004,   /* QRST */
+            0x00000009,   /* QSAFE */
+            0x0000000d,   /* RDV */
+            0x000004df,   /* REFRESH */
+            0x00000000,   /* BURST_REFRESH_NUM */
+            0x00000003,   /* PDEX2WR */
+            0x00000003,   /* PDEX2RD */
+            0x00000003,   /* PCHG2PDEN */
+            0x00000003,   /* ACT2PDEN */
+            0x00000001,   /* AR2PDEN */
+            0x0000000a,   /* RW2PDEN */
+            0x000000c8,   /* TXSR */
+            0x00000003,   /* TCKE */
+            0x00000006,   /* TFAW */
+            0x00000004,   /* TRPAB */
+            0x00000008,   /* TCLKSTABLE */
+            0x00000002,   /* TCLKSTOP */
+            0x00000000,   /* TREFBW */
+            0x00000000,   /* QUSE_EXTRA */
+            0x00000002,   /* FBIO_CFG6 */
+            0x00000000,   /* ODT_WRITE */
+            0x00000000,   /* ODT_READ */
+            0x00000083,   /* FBIO_CFG5 */
+            0xa05c04ae,   /* CFG_DIG_DLL */
+            0x007fb010,   /* DLL_XFORM_DQS */
+            0x00078000,   /* DLL_XFORM_QUSE */
+            0x00000000,   /* ZCAL_REF_CNT */
+            0x00000000,   /* ZCAL_WAIT_CNT */
+            0x00000000,   /* AUTO_CAL_INTERVAL */
+            0x00000000,   /* CFG_CLKTRIM_0 */
+            0x00000000,   /* CFG_CLKTRIM_1 */
+            0x00000000,   /* CFG_CLKTRIM_2 */
+        }
+    },
+    {
+                  0x20,   /* Rev 2.0 */
+                333000,   /* SDRAM frquency */
+                  1200,   /* EMC core voltage */
+                    46,   /* Number of EMC parameters below */
+        {
+            0x00000014,   /* RC */
+            0x0000002B,   /* RFC */
+            0x0000000F,   /* RAS */
+            0x00000005,   /* RP */
+            0x00000004,   /* R2W */
+            0x00000005,   /* W2R */
+            0x00000003,   /* R2P */
+            0x0000000C,   /* W2P */
+            0x00000005,   /* RD_RCD */
+            0x00000005,   /* WR_RCD */
+            0x00000003,   /* RRD */
+            0x00000001,   /* REXT */
+            0x00000004,   /* WDV */
+            0x00000005,   /* QUSE */
+            0x00000004,   /* QRST */
+            0x00000009,   /* QSAFE */
+            0x0000000D,   /* RDV */
+            0x000009ff,   /* REFRESH */
+            0x00000000,   /* BURST_REFRESH_NUM */
+            0x00000003,   /* PDEX2WR */
+            0x00000003,   /* PDEX2RD */
+            0x00000005,   /* PCHG2PDEN */
+            0x00000005,   /* ACT2PDEN */
+            0x00000001,   /* AR2PDEN */
+            0x0000000f,   /* RW2PDEN */
+            0x000000C8,   /* TXSR */
+            0x00000003,   /* TCKE */
+            0x0000000C,   /* TFAW */
+            0x00000006,   /* TRPAB */
+            0x00000008,   /* TCLKSTABLE */
+            0x00000002,   /* TCLKSTOP */
+            0x00000000,   /* TREFBW */
+            0x00000000,   /* QUSE_EXTRA */
+            0x00000002,   /* FBIO_CFG6 */
+            0x00000000,   /* ODT_WRITE */
+            0x00000000,   /* ODT_READ */
+            0x00000083,   /* FBIO_CFG5 */
+            0xe044048b,   /* CFG_DIG_DLL */
+            0x007f9010,   /* DLL_XFORM_DQS */
+            0x00023014,   /* DLL_XFORM_QUSE */
+            0x00000000,   /* ZCAL_REF_CNT */
+            0x00000000,   /* ZCAL_WAIT_CNT */
+            0x00000000,   /* AUTO_CAL_INTERVAL */
+            0x00000000,   /* CFG_CLKTRIM_0 */
+            0x00000000,   /* CFG_CLKTRIM_1 */
+            0x00000000,   /* CFG_CLKTRIM_2 */
+        }
+    } 	
     #else //from peter pan 
     {
                   0x20,   /* Rev 2.0 */
