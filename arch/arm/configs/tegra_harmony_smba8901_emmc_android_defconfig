@@ -254,7 +254,7 @@ CONFIG_SMBA8901=y
 #
 # Subboard platform
 #
-CONFIG_7232C_V21=y
+CONFIG_7332C_V21=y
 
 
 #
