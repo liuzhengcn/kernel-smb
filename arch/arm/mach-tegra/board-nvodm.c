@@ -1409,6 +1409,7 @@ static struct platform_device pixel_qi_screen_ctrl_device = {
 
 #ifdef CONFIG_SWITCH_H2W
 #if (defined(CONFIG_7379Y_V11) || defined(CONFIG_7373C_V20)||defined(CONFIG_7564C_V10)||defined(CONFIG_7232C_V21)||defined(CONFIG_7546Y_V10))
+
 static struct switch_h2w_platform_data switch_h2w_pdata = {
 	.hp_det_port = 'w' - 'a', 
 	.hp_det_pin = 2, 

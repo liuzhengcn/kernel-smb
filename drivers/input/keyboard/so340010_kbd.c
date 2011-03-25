@@ -135,7 +135,7 @@ static struct so340010_kbd_info key_table[] = {
 	{ 0x0004, KEY_MENU },
 	{ 0x0002, KEY_BACK },
 	{ 0x0001, KEY_HOME },
-#elif defined(CONFIG_7232C_V21)
+#elif defined(CONFIG_7332C_V21)
 	{ 0x0008, KEY_SEARCH },
     { 0x0004, KEY_MENU },
     { 0x0002, KEY_HOME },
@@ -168,7 +168,7 @@ static struct so340010_register so340010_register_init_table[] = {
 //  { 0x000E, { 0x01, 0x00 } },
 	{ 0x0010, { 0xA0, 0xA0 } },
 	{ 0x0011, { 0x00, 0xA0 } },
-#elif defined(CONFIG_7232C_V21)
+#elif defined(CONFIG_7332C_V21)
 	{ 0x0000, { 0x00, 0x07 } },
     { 0x0001, { 0x00, 0x20 } },
     { 0x0004, { 0x00, 0x07 } },

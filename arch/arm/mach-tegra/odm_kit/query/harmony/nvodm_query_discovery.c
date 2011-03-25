@@ -506,7 +506,7 @@ NvOdmPeripheralGetBoardInfo(
 
     // Match not found
     pBoardInfo = NULL;
-#if defined(CONFIG_7373C_V20)
+ #if (defined(CONFIG_7373C_V20)||defined(CONFIG_7332C_V21)||defined(CONFIG_7564C_V10)||defined(CONFIG_7265C_V20)||defined(CONFIG_7323C_V21))
 	return NV_TRUE;
 #else
 	return NV_FALSE;
