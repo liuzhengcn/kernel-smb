@@ -22,7 +22,15 @@
 #include "nvodm_services.h"
 #include "nvodm_query_discovery.h"
 #include "nvodm_pmu.h"
-
+#if (defined(CONFIG_7546Y_V10))
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/init.h>
+#include <linux/switch.h>
+#include <linux/device.h>
+#include <linux/delay.h>
+#include <linux/platform_device.h>
+#endif
 #define VIBRATE_DEVICE_GUID NV_ODM_GUID('v','i','b','r','a','t','o','r')
 #if (defined(CONFIG_7546Y_V10))
 #define VIBRATE_DET_ENABLE_PORT		'v'-'a'    //hzj added
@@ -48,7 +56,13 @@ typedef struct NvOdmVibDeviceRec
 
     /*Pmu Vdd Rail capabilities*/
     NvOdmServicesPmuVddRailCapabilities RailCaps;
-
+#if (defined(CONFIG_7546Y_V10))
+    /*hzj added motor*/
+    NvOdmServicesGpioHandle vibrate_gpio;
+    NvOdmGpioPinHandle vibrate_pin;
+    NvOdmServicesGpioHandle vibrate_segpio;
+    NvOdmGpioPinHandle vibrate_sepin;
+#endif
     /* Pmu Rail ID*/
     NvU32  VddId;
 
@@ -236,6 +250,7 @@ NvOdmVibStart(NvOdmVibDeviceHandle hOdmVibrate)
     {
         return NV_FALSE;
     }
+
 #if (defined(CONFIG_7546Y_V10)) 
      NvOdmGpioSetState(hOdmVibrate->vibrate_gpio, hOdmVibrate->vibrate_pin, 1); //Hzj added
      NvOdmGpioSetState(hOdmVibrate->vibrate_segpio, hOdmVibrate->vibrate_sepin, 1);
