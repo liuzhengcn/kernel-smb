@@ -563,4 +563,11 @@ config TOUCHSCREEN_TEGRA_ODM_AT168
 		controller.
 		If not, say N.
 		
+config TOUCHSCREEN_MAXTOUCH1386
+	boolean "Use ATMEL MAXTOUCH1386 as touch screen controller"
+	default n
+	help
+		Say Y here if your borad choose ATMEL as your touch screen 
+		controller.
+		If not, say N.				
 endif

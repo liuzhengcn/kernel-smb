@@ -423,7 +423,6 @@ static const TPS6586xPmuSupplyInfo tps6586xSupplyInfoTable[] =
         {TPS6586x_R52_RGB1GREEN, 7, 1, TPS6586x_RFF_INVALID},
         NULL, NULL, NULL,
         TPS6586x_RFF_INVALID,
-
         {
             NV_FALSE,
             0, 1, 0x1f, 0
@@ -1436,7 +1435,7 @@ void Nv_WIFI_LED_Control(unsigned int enable)
 	}
 }
 
-#if (defined(CONFIG_7564C_V10)) //suspend led  hzj added
+ #if (defined(CONFIG_7564C_V10)||defined(CONFIG_7546Y_V10)) //suspend led  hzj added
 
 NvOdmPmuDeviceHandle Suspend_hDevice=NULL;
 
@@ -1498,7 +1497,7 @@ NvBool Tps6586xSetup(NvOdmPmuDeviceHandle hDevice)
 	WIFI_hDevice = hDevice;
 
 
-#if (defined(CONFIG_7564C_V10))
+ #if (defined(CONFIG_7564C_V10)||defined(CONFIG_7546Y_V10))
   Suspend_hDevice= hDevice; //hzj added
 #endif  
 
