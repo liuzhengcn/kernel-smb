@@ -38,8 +38,7 @@ choice
 	
 
 config 7113C_V10
-	bool "Board number: 7113C_V10"	
-		
+	bool "Board number: 7113C_V10"
 endchoice
 
 choice 
