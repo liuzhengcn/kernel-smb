@@ -424,7 +424,7 @@ static const NvOdmSdramControllerConfigAdv s_NvOdmHyS5c1GbEmcConfigTable[] =
             0x00000000,   /* ODT_WRITE */
             0x00000000,   /* ODT_READ */
             0x00000083,   /* FBIO_CFG5 */
-            0xa05c04ae,   /* CFG_DIG_DLL */
+            0xa06e04ae,//0xa05c04ae,   /* CFG_DIG_DLL */
             0x007fb010,   /* DLL_XFORM_DQS */
             0x00078000,   /* DLL_XFORM_QUSE */
             0x00000000,   /* ZCAL_REF_CNT */
@@ -478,9 +478,9 @@ static const NvOdmSdramControllerConfigAdv s_NvOdmHyS5c1GbEmcConfigTable[] =
             0x00000000,   /* ODT_WRITE */
             0x00000000,   /* ODT_READ */
             0x00000083,   /* FBIO_CFG5 */
-            0xe044048b,   /* CFG_DIG_DLL */
-            0x007f9010,   /* DLL_XFORM_DQS */
-            0x00023014,   /* DLL_XFORM_QUSE */
+            0xe04e048b,//0xe044048b,   /* CFG_DIG_DLL */
+            0x007fa010,//0x007f9010,   /* DLL_XFORM_DQS */
+            0x00028014,//0x00023014,   /* DLL_XFORM_QUSE */
             0x00000000,   /* ZCAL_REF_CNT */
             0x00000000,   /* ZCAL_WAIT_CNT */
             0x00000000,   /* AUTO_CAL_INTERVAL */
