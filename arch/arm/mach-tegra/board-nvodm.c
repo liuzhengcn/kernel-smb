@@ -1314,7 +1314,7 @@ struct lis35de_platform_data lis35de_pdata = {
     .i2c_address =  LIS35DE_I2C_ADDRESS,
     .update_interval = 20,
     .intr_gpio = TEGRA_GPIO_PJ0,
-    .flag = LIS35DE_FLIP_X | LIS35DE_FLIP_Y,
+    .flag = 0,//LIS35DE_FLIP_X | LIS35DE_FLIP_Y,
 };
 #elif  (defined(CONFIG_7546Y_V10))
 struct lis35de_platform_data lis35de_pdata = {
